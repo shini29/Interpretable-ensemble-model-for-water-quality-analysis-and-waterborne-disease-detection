@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Prediction & Disease Detection</title>
+    <style>
+        /* Global Styles */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #2ecc71;
+    --background-color: #f4f7f9;
+    --text-color: #333;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 1550px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-right: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon {
+    margin-right: 12px;
+    color: var(--white);
+    font-size: 32px;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 18px;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    background: url('water-background.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 200px 0;
+    overflow: hidden;
+    min-height: 600px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg, 
+        rgba(0, 0, 0, 0.6) 0%, 
+        rgba(0, 123, 190, 0.3) 100%
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 60px;
+    border-radius: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h2 {
+    font-size: 54px;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero p {
+    font-size: 22px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.cta-buttons {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 16px 32px;
+    background-color: var(--secondary-color);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+.btn:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--white);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* About Section */
+.about-section {
+    padding: 120px 10%;
+    background-color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(52, 152, 219, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+    transform: translate(100px, -150px);
+}
+
+.about-content h2 {
+    text-align: center;
+    margin-bottom: 70px;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 38px;
+    position: relative;
+}
+
+.about-content h2::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--secondary-color);
+    border-radius: 2px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.about-card {
+    background-color: var(--background-color);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    border-top: 4px solid var(--secondary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.about-card:hover::before {
+    transform: scaleX(1);
+}
+
+.about-card h3 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 24px;
+    position: relative;
+    display: inline-block;
+}
+
+.about-card h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--accent-color);
+}
+
+.about-card p {
+    margin-bottom: 20px;
+    line-height: 1.8;
+}
+
+.about-card ul {
+    list-style-type: none;
+    padding-left: 5px;
+}
+
+.about-card ul li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+}
+
+.about-card ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Dashboard */
+.dashboard-container {
+    padding: 80px 60px;
+    text-align: center;
+    background-color: var(--background-color);
+    position: relative;
+}
+
+.dashboard-container h1 {
+    font-size: 38px;
+    margin-bottom: 50px;
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+}
+
+.dashboard-container h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+    border-radius: 2px;
+}
+
+.dashboard-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 60px;
+}
+
+.dashboard-box {
+    background-color: var(--white);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    transition: all 0.4s ease;
+    border-top: 5px solid var(--secondary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-box::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(46, 204, 113, 0.2) 0%, rgba(46, 204, 113, 0) 70%);
+    border-radius: 50%;
+}
+
+.dashboard-box:hover {
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-box h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 26px;
+}
+
+.dashboard-box p {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+.dashboard-box .btn {
+    margin-top: 20px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    background-color: #f8fafc;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background-color: white;
+}
+
+/* Prediction Container */
+.prediction-container {
+    max-width: 700px;
+    margin: 80px auto;
+    background-color: var(--white);
+    padding: 60px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border-top: 6px solid var(--secondary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.prediction-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0) 70%);
+    border-radius: 50%;
+}
+
+.prediction-container h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 50px;
+    font-weight: 600;
+    position: relative;
+    font-size: 32px;
+}
+
+.prediction-container h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--secondary-color);
+    border-radius: 2px;
+}
+
+/* Disease Detection Container */
+.disease-detection-container {
+    max-width: 700px;
+    margin: 80px auto;
+    background-color: var(--white);
+    padding: 60px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border-top: 6px solid var(--secondary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.disease-detection-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0) 70%);
+    border-radius: 50%;
+}
+
+.disease-detection-container h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 50px;
+    font-weight: 600;
+    position: relative;
+    font-size: 32px;
+}
+
+.disease-detection-container h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--secondary-color);
+    border-radius: 2px;
+}
+
+/* Result Styling */
+.prediction-result, .disease-result {
+    margin-top: 40px;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #f0f9ff;
+    border-left: 5px solid var(--secondary-color);
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+    display: none; /* Will be shown via JS */
+}
+
+.prediction-result h3, .disease-result h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.prediction-result p, .disease-result p {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    text-align: center;
+    padding: 35px 0;
+    margin-top: 80px;
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+}
+
+footer p {
+    font-size: 16px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.social-links {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.social-link {
+    color: white;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.social-link:hover {
+    transform: translateY(-5px);
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 992px) {
+    .about-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .hero h2 {
+        font-size: 42px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-boxes {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero {
+        padding: 120px 0;
+        min-height: 450px;
+    }
+    
+    .hero-content {
+        padding: 30px;
+        max-width: 90%;
+    }
+    
+    .hero h2 {
+        font-size: 36px;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+    }
+    
+    .prediction-container, .disease-detection-container {
+        padding: 40px 20px;
+    }
+}
+
+/* Page display control */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Water Quality Prediction & Disease Detection</h1>
+            <nav>
+                <a href="#" onclick="showPage('home')">Home</a>
+                <a href="#" onclick="showPage('home'); setTimeout(() => document.getElementById('about').scrollIntoView({behavior: 'smooth'}), 100)">About</a>
+            </nav>
+        </header>
+
+        <!-- Home Page -->
+        <div id="home-page" class="page active">
+            <main id="home">
+                <section class="hero">
+                    <div class="hero-content">
+                        <h2>Water Quality Analysis</h2>
+                        <p>Comprehensive water quality prediction and waterborne disease detection platform</p>
+                        <div class="cta-buttons">
+                            <a href="#" onclick="showPage('dashboard')" class="btn">Get Started</a>
+                            <a href="#about" class="btn btn-secondary">Learn More</a>
+                        </div>
+                    </div>
+                </section>
+                <section id="about" class="about-section">
+                    <div class="about-content">
+                        <h2>About Water Quality Detection</h2>
+                        <div class="about-grid">
+                            <div class="about-card">
+                                <h3>Water Quality Prediction</h3>
+                                <p>Our advanced system analyzes critical water parameters to assess overall water quality, helping identify potential contamination risks before they become serious health hazards.</p>
+                            </div>
+                            <div class="about-card">
+                                <h3>Waterborne Disease Detection</h3>
+                                <p>By monitoring key water quality indicators, we provide early warning signs of potential waterborne diseases, protecting communities from health risks associated with contaminated water sources.</p>
+                            </div>
+                            <div class="about-card">
+                                <h3>Importance in Our Life</h3>
+                                <p>Clean water is essential for human survival. Our technology aims to:</p>
+                                <ul>
+                                    <li>Prevent waterborne diseases</li>
+                                    <li>Ensure safe drinking water</li>
+                                    <li>Protect public health</li>
+                                    <li>Support environmental monitoring</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page">
+            <main class="dashboard-container">
+                <h1>Water Quality Analysis</h1>
+                <div class="dashboard-boxes">
+                    <div class="dashboard-box" id="water-quality-box">
+                        <h2>Water Quality Prediction</h2>
+                        <p>Analyze water quality parameters</p>
+                        <a href="#" onclick="showPage('water-quality')" class="btn">Predict Now</a>
+                    </div>
+                    <div class="dashboard-box" id="disease-detection-box">
+                        <h2>Waterborne Disease Detection</h2>
+                        <p>Check potential health risks</p>
+                        <a href="#" onclick="showPage('disease-detection')" class="btn">Detect Now</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Water Quality Prediction Page -->
+        <div id="water-quality-page" class="page">
+            <div class="prediction-container">
+                <h1>Water Quality Prediction</h1>
+                <form id="water-quality-form">
+                    <div class="form-group">
+                        <label for="ph-quality">pH Level</label>
+                        <input type="number" id="ph-quality" name="ph" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ec-quality">Electrical Conductivity (µS/cm)</label>
+                        <input type="number" id="ec-quality" name="ec" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="do-quality">Dissolved Oxygen (mg/L)</label>
+                        <input type="number" id="do-quality" name="do" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="turbidity-quality">Turbidity (NTU)</label>
+                        <input type="number" id="turbidity-quality" name="turbidity" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="temperature-quality">Temperature (°C)</label>
+                        <input type="number" id="temperature-quality" name="temperature" step="0.1" required>
+                    </div>
+                    <button type="submit" class="btn">Predict Water Quality</button>
+                </form>
+                <div id="prediction-result" class="prediction-result"></div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="#" onclick="showPage('dashboard')" class="btn">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disease Detection Page -->
+<div id="disease-detection-page" class="page">
+    <div class="disease-detection-container">
+        <h1>Waterborne Disease Detection</h1>
+        <form id="disease-detection-form">
+            <div class="form-group">
+                <label for="ph-disease">pH Level</label>
+                <input type="number" id="ph-disease" name="ph" step="0.1" min="0" max="14" required>
+            </div>
+            <div class="form-group">
+                <label for="turbidity-disease">Turbidity (NTU)</label>
+                <input type="number" id="turbidity-disease" name="turbidity" step="0.1" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="do-disease">Dissolved Oxygen (mg/L)</label>
+                <input type="number" id="do-disease" name="do" step="0.1" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="bod-disease">Biological Oxygen Demand (mg/L)</label>
+                <input type="number" id="bod-disease" name="bod" step="0.1" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="nitrate">Nitrate (mg/L)</label>
+                <input type="number" id="nitrate" name="nitrate" step="0.1" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="total-coliform">Total Coliform (CFU/100mL)</label>
+                <input type="number" id="total-coliform" name="totalColiform" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="ecoli">E. coli (CFU/100mL)</label>
+                <input type="number" id="ecoli" name="ecoli" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="nitrite">Nitrite (mg/L)</label>
+                <input type="number" id="nitrite" name="nitrite" step="0.01" min="0" required>
+            </div>
+            <button type="submit" class="btn">Detect Disease Risk</button>
+        </form>
+        <div id="disease-result" class="disease-result"></div>
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="#" onclick="showPage('dashboard')" class="btn">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+        <footer>
+            <p>&copy; 2025 Water Quality Prediction Platform. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Page navigation function
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(pageId + '-page').classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Form Validation and Submission Functions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Water Quality Prediction Form
+            const waterQualityForm = document.getElementById('water-quality-form');
+            if (waterQualityForm) {
+                waterQualityForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const params = {
+                        ph: parseFloat(document.getElementById('ph-quality').value),
+                        ec: parseFloat(document.getElementById('ec-quality').value),
+                        do: parseFloat(document.getElementById('do-quality').value),
+                        turbidity: parseFloat(document.getElementById('turbidity-quality').value),
+                        temperature: parseFloat(document.getElementById('temperature-quality').value)
+                    };
+
+                    const predictionResult = predictWaterQuality(params);
+                    displayPredictionResult(predictionResult);
+                });
+            }
+
+            // Disease Detection Form
+            // Disease Detection Form
+const diseaseDetectionForm = document.getElementById('disease-detection-form');
+if (diseaseDetectionForm) {
+    diseaseDetectionForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const params = {
+            ph: parseFloat(document.getElementById('ph-disease').value),
+            turbidity: parseFloat(document.getElementById('turbidity-disease').value),
+            do: parseFloat(document.getElementById('do-disease').value),
+            bod: parseFloat(document.getElementById('bod-disease').value),
+            nitrate: parseFloat(document.getElementById('nitrate').value),
+            totalColiform: parseFloat(document.getElementById('total-coliform').value),
+            ecoli: parseFloat(document.getElementById('ecoli').value),
+            nitrite: parseFloat(document.getElementById('nitrite').value)
+        };
+
+        const diseaseResult = detectWaterborneDisease(params);
+        displayDiseaseResult(diseaseResult);
+    });
+}
+        });
+
+        function predictWaterQuality(params) {
+            // Simulated water quality prediction logic
+            // In a real application, this would use machine learning models
+            const { ph, ec, do: dissolvedOxygen, turbidity, temperature } = params;
+           
+            // Very basic prediction logic (this should be replaced with actual ML model)
+            let qualityScore = 0;
+           
+            // pH check (ideal range 6.5-8.5)
+            if (ph >= 6.5 && ph <= 8.5) qualityScore += 20;
+           
+            // Electrical Conductivity check (typical range 0-1000 µS/cm)
+            if (ec >= 0 && ec <= 1000) qualityScore += 20;
+           
+            // Dissolved Oxygen check (good if > 5 mg/L)
+            if (dissolvedOxygen > 5) qualityScore += 20;
+           
+            // Turbidity check (ideal < 5 NTU)
+            if (turbidity < 5) qualityScore += 20;
+           
+            // Temperature check (typical range 0-30°C)
+            if (temperature >= 0 && temperature <= 30) qualityScore += 20;
+
+            return {
+                score: qualityScore,
+                quality: qualityScore >= 80 ? 'Excellent' :
+                         qualityScore >= 60 ? 'Good' :
+                         qualityScore >= 40 ? 'Fair' : 'Poor'
+            };
+        }
+
+        function detectWaterborneDisease(params) {
+    // Enhanced waterborne disease detection logic
+    const { ph, turbidity, do: dissolvedOxygen, totalColiform, ecoli, nitrite, nitrate, bod } = params;
+    
+    let diseaseRisk = 0;
+    let potentialDiseases = [];
+    
+    // pH risk assessment (ideal range 6.5-8.5)
+    if (ph < 6.5 || ph > 8.5) {
+        diseaseRisk += 10;
+        if (ph < 6.0 || ph > 9.0) {
+            potentialDiseases.push("Gastrointestinal issues");
+        }
+    }
+    
+    // Turbidity risk assessment (ideal < 5 NTU)
+    if (turbidity > 5) {
+        diseaseRisk += 10;
+        if (turbidity > 10) {
+            potentialDiseases.push("Cryptosporidiosis");
+        }
+    }
+    
+    // Dissolved Oxygen risk assessment (good if > 5 mg/L)
+    if (dissolvedOxygen < 5) {
+        diseaseRisk += 10;
+        if (dissolvedOxygen < 3) {
+            potentialDiseases.push("Bacterial contamination risk");
+        }
+    }
+    
+    // BOD risk assessment (ideal < 3 mg/L for clean water)
+    if (bod > 3) {
+        diseaseRisk += 10;
+        if (bod > 8) {
+            potentialDiseases.push("Organic pollution causing microbial growth");
+        }
+    }
+    
+    // Nitrate risk assessment (should be < 10 mg/L for drinking water)
+    if (nitrate > 10) {
+        diseaseRisk += 10;
+        if (nitrate > 45) {
+            potentialDiseases.push("Methemoglobinemia (blue baby syndrome)");
+        }
+    }
+    
+    // Total Coliform risk assessment (should be 0 for drinking water)
+    if (totalColiform > 0) {
+        diseaseRisk += 15;
+        if (totalColiform > 10) {
+            potentialDiseases.push("Gastroenteritis");
+        }
+    }
+    
+    // E. coli risk assessment (should be 0 for drinking water)
+    if (ecoli > 0) {
+        diseaseRisk += 20;
+        potentialDiseases.push("E. coli infection (potential diarrhea, urinary tract infections)");
+    }
+    
+    // Nitrite risk assessment
+    if (nitrite > 1) {
+        diseaseRisk += 10;
+        if (nitrite > 3) {
+            potentialDiseases.push("Methemoglobinemia (blue baby syndrome)");
+        }
+    }
+    
+    let riskLevel = 'Low';
+    if (diseaseRisk >= 70) riskLevel = 'Very High';
+    else if (diseaseRisk >= 50) riskLevel = 'High';
+    else if (diseaseRisk >= 30) riskLevel = 'Moderate';
+    
+    return {
+        risk: riskLevel,
+        score: diseaseRisk,
+        diseases: potentialDiseases
+    };
+}
+
+        function displayPredictionResult(result) {
+            const resultContainer = document.getElementById('prediction-result');
+            
+            let resultHTML = `
+                <h3>Water Quality Result</h3>
+                <p>Quality: <strong>${result.quality}</strong></p>
+                <p>Score: ${result.score}/100</p>
+                <p>Recommendation: `;
+                
+            if (result.quality === 'Excellent' || result.quality === 'Good') {
+                resultHTML += 'This water is suitable for consumption and general use.</p>';
+            } else if (result.quality === 'Fair') {
+                resultHTML += 'This water may need treatment before consumption.</p>';
+            } else {
+                resultHTML += 'This water is not recommended for consumption without treatment.</p>';
+            }
+            
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.style.display = 'block';
+            
+            // Scroll to result
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function displayDiseaseResult(result) {
+            const resultContainer = document.getElementById('disease-result');
+            
+            let resultHTML = `
+                <h3>Waterborne Disease Risk Assessment</h3>
+                <p>Risk Level: <strong>${result.risk}</strong></p>
+                <p>Risk Score: ${result.score}/100</p>`;
+                
+            if (result.diseases.length > 0) {
+                resultHTML += `<p>Potential Health Concerns:</p>
+                <ul>`;
+                result.diseases.forEach(disease => {
+                    resultHTML += `<li>${disease}</li>`;
+                });
+                resultHTML += `</ul>`;
+            } else {
+                resultHTML += `<p>No specific disease risks detected.</p>`;
+            }
+            
+            if (result.risk === 'High' || result.risk === 'Very High') {
+                resultHTML += `<p><strong>Recommendation:</strong> Do not consume this water. Seek professional water treatment immediately.</p>`;
+            } else if (result.risk === 'Moderate') {
+                resultHTML += `<p><strong>Recommendation:</strong> Treatment recommended before consumption.</p>`;
+            } else {
+                resultHTML += `<p><strong>Recommendation:</strong> Water is generally safe, but regular monitoring is advised.</p>`;
+            }
+            
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.style.display = 'block';
+            
+            // Scroll to result
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
